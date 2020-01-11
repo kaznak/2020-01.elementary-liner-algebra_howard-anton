@@ -3,6 +3,7 @@ dependencies:
 devDependencies:
   eslint: 6.8.0
   jest: 24.9.0
+  prettier: 1.19.1
 lockfileVersion: 5.1
 packages:
   /@babel/code-frame/7.5.5:
@@ -2933,6 +2934,13 @@ packages:
       node: '>= 0.8.0'
     resolution:
       integrity: sha1-IZMqVJ9eUv/ZqCf1cOBL5iqX2lQ=
+  /prettier/1.19.1:
+    dev: true
+    engines:
+      node: '>=4'
+    hasBin: true
+    resolution:
+      integrity: sha512-s7PoyDv/II1ObgQunCbB9PdLmUcBZcnWOcxDh7O0N/UwDEsHyqkW+Qh28jW+mVuCdx7gLB0BotYI1Y6uI9iyew==
   /pretty-format/24.9.0:
     dependencies:
       '@jest/types': 24.9.0
@@ -3908,3 +3916,4 @@ specifiers:
   eslint: ^6.8.0
   jest: ^24.9.0
   mathjs: ^6.5.0
+  prettier: 1.19.1

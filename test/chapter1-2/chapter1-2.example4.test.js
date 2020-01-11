@@ -1,5 +1,5 @@
 const math = require("mathjs");
-const chap1 = require("../src/chapter1-2");
+const chap1 = require("../../src/chapter1-2");
 
 test("example 4, Irreducable Gaussian Matrix 1", () => {
   let val = [

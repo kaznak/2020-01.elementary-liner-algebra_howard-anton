@@ -82,7 +82,74 @@ function isIrreducableGaussianMatrix(x) {
   return true;
 }
 
+function gaussJordanElimination(x) {
+  let m;
+
+  if (x instanceof Array) m = x;
+  else if (x instanceof math.Matrix) m = x.toArray();
+  else return false;
+  const size = math.size(m);
+  if (2 != size.length) return undefined;
+
+  const numRow = size[0];
+  const numCol = size[1];
+  m = m.map(r => r.map(v => math.fraction(v)));
+
+  for (let ri = 0, ci = 0; !isGaussianMatrix(m); ri++) {
+    // ステップ1. すべての数が 0 ではない列(縦に並んだ数)のうち最も左の列に注目する。
+    let col;
+    while (true) {
+      col = m.slice(ri).map(r => r[ci]);
+      if (-1 < col.findIndex(v => 0 != v)) break;
+      ci += 1;
+    }
+
+    // ステップ2. ステップ1で注目した列の最も上の数が 0 の時は、 0 でない数をふくむ行(横にならんだ数)と最も上の行とを入れかえる。
+    const rix = ri + col.findIndex(v => 0 != v);
+    if (ri != rix) {
+      const tmp = m[ri];
+      m[ri] = m[rix];
+      m[rix] = tmp;
+    }
+
+    // ステップ3. ステップ1で注目した列の最も上の数を a とするとき(ステップ2によって a != 0)「先頭の1」を作るために第1行を1/a倍する。
+    const a = m[ri][ci];
+    m = m.map((row, i) => (ri != i ? row : row.map(v => v.div(a))));
+
+    // ステップ4. 第1行に適当な数をかけて、「先頭の1」より下にある0でない数をふくむ行に加え、「先頭の1」より下の数をすべて0にする。
+    row = m[ri];
+    m = m.map((r, i) =>
+      ri >= i || 0 == r[ci]
+        ? r
+        : math.subtract(
+            r,
+            row.map(v => v.mul(r[ci]))
+          )
+    );
+    // ステップ5. 第1行を忘れて、残った行列について、ステップ1にもどる。これを全体がガウス行列になるまで続ける。
+  }
+
+  for (let ri = numRow - 1, ci; !isIrreducableGaussianMatrix(m); ri--) {
+    // ステップ6. 「先頭の1」より上がすべて0になるように、「先頭の1」をふくむ行に適当な数をかけて、それよりも上の行に加える。
+    const row = m[ri];
+    const ci = row.findIndex(v => 1 == v);
+    if (-1 == ci) continue;
+
+    m = m.map((r, i) =>
+      ri <= i
+        ? r
+        : math.subtract(
+            r,
+            row.map(v => v.mul(r[ci]))
+          )
+    );
+  }
+
+  return m;
+}
+
 module.exports = {
   isGaussianMatrix,
-  isIrreducableGaussianMatrix
+  isIrreducableGaussianMatrix,
+  gaussJordanElimination
 };

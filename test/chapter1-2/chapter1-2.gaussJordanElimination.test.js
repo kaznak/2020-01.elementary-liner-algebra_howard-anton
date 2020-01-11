@@ -15,5 +15,10 @@ test("Gauss-Jordan Elimination", () => {
 
   let out = chap1.gaussJordanElimination(val);
   expect(chap1.isIrreducableGaussianMatrix(out)).toBe(true);
-  expect(math.equal(out, ret).flat().every(v => v)).toBe(true);
+  expect(
+    math
+      .equal(out, ret)
+      .flat()
+      .every(v => v)
+  ).toBe(true);
 });

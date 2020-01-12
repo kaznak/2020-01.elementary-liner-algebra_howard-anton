@@ -88,6 +88,7 @@ function isIrreducableGaussianMatrix(x) {
   return true;
 }
 
+// ガウス-ジョルダンの消去法
 function gaussJordanElimination(x) {
   let m = math.map(toArray(x), v => math.fraction(v));
 
@@ -95,13 +96,15 @@ function gaussJordanElimination(x) {
   if (undefined != rest)
     throw new TypeError("argument must be a two dimensional mathjs matrix");
 
-  for (let ri = 0, ci = 0; ri < numRow && ci < numCol; ri++) {
+  for (let ri = 0, ci = 0; ri < numRow; ri++) {
     // ステップ1. すべての数が 0 ではない列(縦に並んだ数)のうち最も左の列に注目する。
     // ステップ2. ステップ1で注目した列の最も上の数が 0 の時は、 0 でない数をふくむ行(横にならんだ数)と最も上の行とを入れかえる。
     for (; ; ci++) {
-      if (ci >= numCol) return m;
-      const col = m.slice(ri).map(r => r[ci]);
-      const rid = col.findIndex(v => math.unequal(0, v));
+      if (numCol <= ci) return m;
+      const rid = m
+        .slice(ri)
+        .map(r => r[ci])
+        .findIndex(v => math.unequal(0, v));
       if (-1 < rid) {
         const rix = ri + rid;
         const tmp = m[ri];
@@ -114,8 +117,7 @@ function gaussJordanElimination(x) {
     // ステップ3. ステップ1で注目した列の最も上の数を a とするとき(ステップ2によって a != 0)「先頭の1」を作るために第1行を1/a倍する。
     // ステップ4. 第1行に適当な数をかけて、「先頭の1」より下にある0でない数をふくむ行に加え、「先頭の1」より下の数をすべて0にする。
     // ステップ6. 「先頭の1」より上がすべて0になるように、「先頭の1」をふくむ行に適当な数をかけて、それよりも上の行に加える。
-    const a = m[ri][ci];
-    const row = math.divide(m[ri], a);
+    const row = math.divide(m[ri], m[ri][ci]);
     m = m.map((r, i) => {
       if (ri == i) return row;
       if (math.equal(0, r[ci])) return r;

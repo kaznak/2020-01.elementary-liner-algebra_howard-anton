@@ -31,11 +31,30 @@ test("scalar values", () => {
 
 test("matrix values", () => {
   let val;
-
   val = [
     [0, 0],
     [0, 0]
   ];
   expect(chap1.isIrreducableGaussianMatrix(val)).toBe(true);
   expect(chap1.isGaussianMatrix(val)).toBe(true);
+});
+
+test("gauss-jordan elimination", () => {
+  let val = [
+    [0, 0],
+    [0, 0]
+  ];
+  let ret = [
+    [0, 0],
+    [0, 0]
+  ];
+
+  let out = chap1.gaussJordanElimination(val);
+  expect(chap1.isIrreducableGaussianMatrix(out)).toBe(true);
+  expect(
+    math
+      .equal(out, ret)
+      .flat()
+      .every(v => v)
+  ).toBe(true);
 });

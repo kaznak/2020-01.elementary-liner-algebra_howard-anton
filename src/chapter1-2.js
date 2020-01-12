@@ -1,8 +1,8 @@
 const math = require("mathjs");
 
-function toArray(x) {
-  if (x instanceof Array) return x;
-  if (x instanceof math.Matrix) return x.toArray();
+function toArray(matrix) {
+  if (matrix instanceof Array) return matrix;
+  if (matrix instanceof math.Matrix) return matrix.toArray();
   throw new TypeError("argument must be a mathjs matrix");
 }
 
@@ -89,8 +89,8 @@ function isIrreducableGaussianMatrix(x) {
 }
 
 // ガウス-ジョルダンの消去法
-function gaussJordanElimination(x) {
-  let m = math.map(toArray(x), v => math.fraction(v));
+function gaussJordanElimination(matrix) {
+  let m = math.map(toArray(matrix), v => math.fraction(v));
 
   const [numRow, numCol, rest] = math.size(m);
   if (undefined != rest)
